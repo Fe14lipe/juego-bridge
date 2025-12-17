@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, Heart, Trophy, X, Check, ArrowUp } from 'lucide-react';
+import { Sword, Zap, Shield, Heart, Trophy, X, Check, ArrowUp } from 'lucide-react';
 
 interface Character {
   id: string;
@@ -30,7 +30,7 @@ const BridgePatternGame: React.FC = () => {
   const [gameState, setGameState] = useState<'menu' | 'playing' | 'explanation' | 'win' | 'lose'>('menu');
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
-  const [timeLeft, setTimeLeft] = useState(45);
+  const [timeLeft, setTimeLeft] = useState(25); // Start with 25 seconds
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [selectedWeapon, setSelectedWeapon] = useState<Weapon | null>(null);
   const [enemy, setEnemy] = useState<Enemy | null>(null);
@@ -74,7 +74,12 @@ const BridgePatternGame: React.FC = () => {
   }, [timeLeft, gameState, isAttacking]);
 
   const generateEnemy = () => {
-    const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+    // Filter out the current enemy to avoid consecutive duplicates
+    const availableEnemies = enemy 
+      ? enemies.filter(e => e.id !== enemy.id) 
+      : enemies;
+      
+    const randomEnemy = availableEnemies[Math.floor(Math.random() * availableEnemies.length)];
     setEnemy(randomEnemy);
     setSelectedCharacter(null);
     setSelectedWeapon(null);
@@ -86,7 +91,7 @@ const BridgePatternGame: React.FC = () => {
     setGameState('playing');
     setScore(0);
     setLevel(1);
-    setTimeLeft(45);
+    setTimeLeft(25); // Set initial time to 25s
     setStreak(0);
     generateEnemy();
   };
@@ -125,7 +130,7 @@ const BridgePatternGame: React.FC = () => {
     }
 
     if (weakness) {
-      bonusPoints += 20;
+      bonusPoints += 15;
       currentFeedback += `🎯 DEBILIDAD! `;
     }
 
@@ -142,7 +147,7 @@ const BridgePatternGame: React.FC = () => {
       
       if (newScore >= level * 200) {
         setLevel(newLevel);
-        setTimeLeft(prev => prev + 15);
+        setTimeLeft(prev => prev + 20); // Add 20s on level up
         victoryMsg += `\n🎉 NIVEL UP!`;
       }
       
