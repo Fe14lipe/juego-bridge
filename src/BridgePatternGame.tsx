@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sword, Zap, Shield, Heart, Trophy, X, Check, ArrowUp } from 'lucide-react';
+import { Zap, Heart, Trophy, X, Check, ArrowUp } from 'lucide-react';
 
 interface Character {
   id: string;
@@ -470,3 +470,4 @@ const BridgePatternGame: React.FC = () => {
 };
 
 export default BridgePatternGame;
+
